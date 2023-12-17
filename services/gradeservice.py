@@ -122,23 +122,6 @@ class GradeService:
   #   rez.sort(key = lambda x:(x[0], -x[1]))
   #   # sortez rezultate
   
-  def selection_sort(self, dictio, by_what):
-    """Algoritm de sortare dictio- dicitionarul cu elementele care trebuie sortate
-      by_what - dupa ce parametru se face sortarea
-    """
-    itms = list(dictio.items())
-    
-    for i in range(0,len(itms)-1):
-      poz_max= i
-      for j in range(i+1,len(itms)):
-        # sortare dupa nume -- numele fiind pe pozitia 0
-        if itms[j][by_what] < itms[poz_max][by_what]:
-          poz_max = j
-      
-      itms[i],itms[poz_max] = itms[poz_max],itms[i]
-    return dict(itms)
-
-
 
   def get_all_student_and_grade_specific_discipline(self, disciplina):
     """Returneaza toati studenti si notele lor la disciplina disciplina ordonati alfabetic
@@ -167,6 +150,7 @@ class GradeService:
     """Returneaza 20% dintre cei mai buni studenti"""
     rezultate = {}
     number = (len(self.__repository_student)) // 5
+    if number == 0:number = 1
     all_grades = self.__repository_grade.get_all()
 
     for grade in all_grades:        
@@ -251,3 +235,19 @@ class GradeService:
     return dict(itms)
 
     
+  def selection_sort(self, dictio, by_what):
+    """Algoritm de sortare dictio- dicitionarul cu elementele care trebuie sortate
+      by_what - dupa ce parametru se face sortarea
+    """
+    itms = list(dictio.items())
+    
+    for i in range(0,len(itms)-1):
+      poz_max= i
+      for j in range(i+1,len(itms)):
+        # sortare dupa nume -- numele fiind pe pozitia 0
+        if itms[j][by_what] < itms[poz_max][by_what]:
+          poz_max = j
+      
+      itms[i],itms[poz_max] = itms[poz_max],itms[i]
+    return dict(itms)
+

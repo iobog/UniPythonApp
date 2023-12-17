@@ -159,6 +159,7 @@ class Console:
     id = self.read(int,"Give id: ")
     try:
       student = self.__srvst.get_by_id(id)
+      print ( "id     Nume")
       print(str(student.get_id())+ "   " + student.get_nume())
     except Exception as ex:
       print(ex)

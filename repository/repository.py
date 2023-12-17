@@ -33,18 +33,29 @@ class InMemoryRepositoryStud:
     self.__entitati[entitate.get_id()] = entitate
     
   def get(self, id):
-    """Returneaza un studentul cu id-ul id, daca exusta
+    """Returneaza un studentul cu id-ul id, daca existata"""
+    lis = list(self.__entitati.items())
+    t = self.__recursive_get(lis, id)
+    return t
+    
 
-    Args:
-        id (_type_): Id student
-
-    Returns:
-        _type_: _description_
-    """
-    if id not in self.__entitati.keys():
-      # raise RepositoryNotFoundException()
+  def __recursive_get(self, lista, element):
+    """verifica daca element se afla in lista disc"""
+    if lista == [] : 
       return None
-    return self.__entitati[id]
+    if lista[0][0] == element: 
+      return (lista[0][1])
+    return self.__rec(lista[1:], element)
+
+
+
+  # def get(self, id):
+  #   """Returneaza un studentul cu id-ul id, daca exusta
+  #   """
+  #   if id not in self.__entitati.keys():
+  #     # raise RepositoryNotFoundException()
+  #     return None
+  #   return self.__entitati[id]
   
   def get_all(self):
     """Returneaza toti studentii
@@ -73,10 +84,21 @@ class InMemoryRepositoryStud:
     """
     return len(self.__entitati.keys())
    
+  # def removeAll(self):
+  #   """Sterge toti studentii"""
+  #   self.__entitati={}
+   
   def removeAll(self):
     """Sterge toti studentii"""
-    self.__entitati={}
-   
+    self.__entitati = self.__recRemoveAll(list(self.__entitati.items()))
+
+  def __recRemoveAll(self, disc):
+    """Sterge toate elementele din lista disc"""
+    if not disc:  
+      return {}
+
+    return self.__recRemoveAll(disc[1:])
+    
 
 class InMemoryRepositoryDisc:
   """
