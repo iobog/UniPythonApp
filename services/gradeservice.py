@@ -122,6 +122,24 @@ class GradeService:
   #   rez.sort(key = lambda x:(x[0], -x[1]))
   #   # sortez rezultate
   
+  def selection_sort(self, dictio, by_what):
+    """Algoritm de sortare dictio- dicitionarul cu elementele care trebuie sortate
+      by_what - dupa ce parametru se face sortarea
+    """
+    itms = list(dictio.items())
+    
+    for i in range(0,len(itms)-1):
+      poz_max= i
+      for j in range(i+1,len(itms)):
+        # sortare dupa nume -- numele fiind pe pozitia 0
+        if itms[j][by_what] < itms[poz_max][by_what]:
+          poz_max = j
+      
+      itms[i],itms[poz_max] = itms[poz_max],itms[i]
+    return dict(itms)
+
+
+
   def get_all_student_and_grade_specific_discipline(self, disciplina):
     """Returneaza toati studenti si notele lor la disciplina disciplina ordonati alfabetic
     """
@@ -141,7 +159,8 @@ class GradeService:
           rezultate[student_name] = [grade.get_nota()]
     
     # sortat alfabetic dupa nume
-    rezultate_sortate = dict(sorted(rezultate.items()))
+    # rezultate_sortate = dict(sorted(rezultate.items()))
+    rezultate_sortate = self.selection_sort(rezultate, 0)
     return rezultate_sortate
   
   def top_20_studenti(self):
@@ -162,7 +181,8 @@ class GradeService:
     for key, values in rezultate.items():
         sums[key] = sum(values)/len(values)
         
-    rezultat_sortat = dict(sorted(sums.items(), key = lambda item: item[1],reverse = True ))
+    # rezultat_sortat = dict(sorted(sums.items(), key = lambda item: item[1],reverse = True ))
+    rezultat_sortat = self.shake_sort(sums,1)
     rezultate={}
     for key in rezultat_sortat.keys():
       rezultate[key] = rezultat_sortat[key]
@@ -175,6 +195,7 @@ class GradeService:
     """
     rezultate = {}
     number = (len(self.__repository_disciplina)) // 5
+    if number == 0:number = 1
     all_grades = self.__repository_grade.get_all()
 
     for grade in all_grades:        
@@ -188,12 +209,45 @@ class GradeService:
     
     sums = {}
     for key, values in rezultate.items():
-        sums[key] = sum(values)/len(values)
+      sums[key] = sum(values)/len(values)
     rezultat_sortat = dict(sorted(sums.items(), key = lambda item: item[1],reverse = True ))
 
     rezultate={}
+    if number == 0:
+      return rezultat_sortat[0]
     for key in rezultat_sortat.keys():
       rezultate[key] = rezultat_sortat[key]
       if number == 1: 
         return rezultate
       number -= 1
+
+
+
+  def shake_sort(self,  element_for_sort, by_what):
+    """Functie de sortare -sorteaza descrescator dupa parametru by_what  """
+
+    itms = list(element_for_sort.items())
+    
+    n = len(itms)
+    print (itms)
+    schimbat = True
+
+    while schimbat:
+      schimbat = False
+      for i in range(0, n-1):
+        if itms[i][by_what] < itms[i+1][by_what]:
+          itms[i], itms[i+1] = itms[i+1], itms[i]
+          schimbat = True
+      
+      if not schimbat:
+        break 
+
+      schimbat = True
+      for i in range(n-1,0,-1):
+        if itms[i][by_what] > itms[i-1][by_what]:
+          itms[i], itms[i-1] = itms[i-1], itms[i]
+          schimbat = True
+
+    return dict(itms)
+
+    

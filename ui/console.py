@@ -251,7 +251,7 @@ class Console:
       print(" ID       Student       Medie")
       for key, values in rezultate.items():
         student = self.__srvst.get_by_id(int(key))
-        print(str(student.get_id())+" " +student.get_nume()+ "  "   +str(*values))
+        print(str(student.get_id())+ " " +student.get_nume()+ "  "   +str(values))
     except Exception as ex:
       print(ex)
     
@@ -262,8 +262,8 @@ class Console:
       rezultate = self.__srvg.top_20_discipline()
       print("ID     Disciplina  Profesor      Medie")
       for key, values in rezultate.items():
-        disciplina = self.__srvds.get_by_id(int(key))
-        print(str(disciplina.get_id())+" " +disciplina.get_nume()+ "  "+disciplina.get_prof()+"   "  +str(*values))
+        disciplina = self.__srvds.get_disciplina_by_id(key)
+        print(str(disciplina.get_id())+" " +disciplina.get_nume()+ "  "+disciplina.get_prof()+"   "  +str(values))
     except Exception as ex:
       print(ex)
     
