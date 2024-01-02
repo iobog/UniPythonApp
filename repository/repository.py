@@ -31,10 +31,24 @@ class InMemoryRepositoryStud:
     if entitate.get_id() in self.__entitati.keys():
       raise RepositoryConflictException()
     self.__entitati[entitate.get_id()] = entitate
+
+  def removeAll(self):
+    """Sterge toti studentii"""
+    self.__entitati = self.__recRemoveAll(list(self.__entitati.items()))
+
+  def __recRemoveAll(self, disc):
+    """Sterge toate elementele din lista disc"""
+    if not disc:  
+      return {}
+
+    return self.__recRemoveAll(disc[1:])
+  
     
   def get(self, id):
     """Returneaza un studentul cu id-ul id, daca existata"""
+    lis = []
     lis = list(self.__entitati.items())
+    
     t = self.__recursive_get(lis, id)
     return t
     
@@ -44,18 +58,11 @@ class InMemoryRepositoryStud:
     if lista == [] : 
       return None
     if lista[0][0] == element: 
-      return (lista[0][1])
-    return self.__rec(lista[1:], element)
+      return lista[0][1]
+    return self.__recursive_get(lista[1:], element)
 
 
 
-  # def get(self, id):
-  #   """Returneaza un studentul cu id-ul id, daca exusta
-  #   """
-  #   if id not in self.__entitati.keys():
-  #     # raise RepositoryNotFoundException()
-  #     return None
-  #   return self.__entitati[id]
   
   def get_all(self):
     """Returneaza toti studentii
@@ -69,6 +76,16 @@ class InMemoryRepositoryStud:
     if entitate.get_id() not in self.__entitati.keys():
       raise RepositoryNotFoundException()
     self.__entitati[entitate.get_id()] = entitate
+  
+  
+  # def get(self, id):
+  #   """Returneaza un studentul cu id-ul id, daca exusta
+  #   """
+  #   if id not in self.__entitati.keys():
+  #     # raise RepositoryNotFoundException()
+  #     return None
+  #   return self.__entitati[id]
+  
   
   def delete(self, entitate):
     """Sterge entitatea, daca exista
@@ -88,16 +105,9 @@ class InMemoryRepositoryStud:
   #   """Sterge toti studentii"""
   #   self.__entitati={}
    
-  def removeAll(self):
-    """Sterge toti studentii"""
-    self.__entitati = self.__recRemoveAll(list(self.__entitati.items()))
+  
 
-  def __recRemoveAll(self, disc):
-    """Sterge toate elementele din lista disc"""
-    if not disc:  
-      return {}
-
-    return self.__recRemoveAll(disc[1:])
+  
     
 
 class InMemoryRepositoryDisc:

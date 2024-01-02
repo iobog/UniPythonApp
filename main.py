@@ -26,7 +26,7 @@ def run():
   # repo2 = InMemoryRepositoryDisc()
   # repo3 = InMemoryRepositoryGrade()
 
-  # open("student.txt", "w").close()
+  # open("student.txt", "w").close()e
   # open("discipline.txt", "w").close()
   # open("note.txt", "w").close()
   
@@ -42,7 +42,9 @@ def run():
   
   ui.show_ui()
   
+
+
 run()
 
 
-# Este o copie a proiectului initial
+# Este o copie a proiectului initialraport

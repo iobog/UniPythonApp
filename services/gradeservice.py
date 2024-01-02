@@ -4,6 +4,7 @@ from domain.validatori import GradeValidator, ValidatorException
 from repository.repository import RepositoryConflictException, RepositoryNotFoundException
 from services.exception import ServiceException
 
+from services.sortare import SelectionSort,ShakeSort
 import random
 import string
 
@@ -142,9 +143,17 @@ class GradeService:
           rezultate[student_name] = [grade.get_nota()]
     
     # sortat alfabetic dupa nume
+    # sort_instance = SelectionSort()
+     
+    # rezultate_sortate = dict(sorted(rezultate.items(), key = lambda item: item[0] ))
+    # return rezultate_sortates
+  
+    instanta = SelectionSort(key=lambda item:item[0])
     # rezultate_sortate = dict(sorted(rezultate.items()))
-    rezultate_sortate = self.selection_sort(rezultate, 0)
-    return rezultate_sortate
+    new = dict(instanta.sellsort(rezultate.items()))
+    
+    return new
+  
   
   def top_20_studenti(self):
     """Returneaza 20% dintre cei mai buni studenti"""
@@ -164,16 +173,19 @@ class GradeService:
     sums = {}
     for key, values in rezultate.items():
         sums[key] = sum(values)/len(values)
-        
-    # rezultat_sortat = dict(sorted(sums.items(), key = lambda item: item[1],reverse = True ))
-    rezultat_sortat = self.shake_sort(sums,1)
+
+    instanta = ShakeSort(key=lambda item:item[1], reverse=True)
+    new = dict(instanta.shasort(sums.items()))
+    # rezultat_sortat = dict(sorted((sums.items()), key = lambda item: item[1], reverse = True ))
+    
+    # rezultat_sortat = self.__shake_sort(sums,1,)
     rezultate={}
-    for key in rezultat_sortat.keys():
-      rezultate[key] = rezultat_sortat[key]
+    for key in new.keys():
+      rezultate[key] = new[key]
       if number == 1: 
         return rezultate
       number -= 1
-
+    
   def top_20_discipline(self):
     """Returneaza cele mai bune 20% discipline
     """
@@ -206,48 +218,4 @@ class GradeService:
       number -= 1
 
 
-
-  def shake_sort(self,  element_for_sort, by_what):
-    """Functie de sortare -sorteaza descrescator dupa parametru by_what  """
-
-    itms = list(element_for_sort.items())
-    
-    n = len(itms)
-    print (itms)
-    schimbat = True
-
-    while schimbat:
-      schimbat = False
-      for i in range(0, n-1):
-        if itms[i][by_what] < itms[i+1][by_what]:
-          itms[i], itms[i+1] = itms[i+1], itms[i]
-          schimbat = True
-      
-      if not schimbat:
-        break 
-
-      schimbat = True
-      for i in range(n-1,0,-1):
-        if itms[i][by_what] > itms[i-1][by_what]:
-          itms[i], itms[i-1] = itms[i-1], itms[i]
-          schimbat = True
-
-    return dict(itms)
-
-    
-  def selection_sort(self, dictio, by_what):
-    """Algoritm de sortare dictio- dicitionarul cu elementele care trebuie sortate
-      by_what - dupa ce parametru se face sortarea
-    """
-    itms = list(dictio.items())
-    
-    for i in range(0,len(itms)-1):
-      poz_max= i
-      for j in range(i+1,len(itms)):
-        # sortare dupa nume -- numele fiind pe pozitia 0
-        if itms[j][by_what] < itms[poz_max][by_what]:
-          poz_max = j
-      
-      itms[i],itms[poz_max] = itms[poz_max],itms[i]
-    return dict(itms)
 

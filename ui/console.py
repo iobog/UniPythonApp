@@ -1,9 +1,12 @@
 
-from repository.repository import RepositoryConflictException, RepositoryException, RepositoryNotFoundException
-from services.studentservices import StudentService
+from domain.entitati import Disciplina, Grade, Student
+from repository.repository import (RepositoryConflictException,
+                                   RepositoryException,
+                                   RepositoryNotFoundException)
 from services.disciplineservices import DisciplineService
 from services.gradeservice import GradeService
-from domain.entitati import Student, Disciplina, Grade
+from services.studentservices import StudentService
+
 
 class Console:
   def __init__(self, srv1,serv2, serv3):
@@ -229,8 +232,7 @@ class Console:
     self.__srvds.generate_discipline()
   
   
-  def __top_20(self):
-    pass
+
 
   def __lista_studenti_la_o_disciplina(self):
     """ Determina studenti si notele lor la o disicplina data
@@ -243,7 +245,7 @@ class Console:
         print(key,   *values)
     except Exception as ex:
       print(ex)
-    
+      
   def __top20_studenti(self):
     """ Determina primi 20% cei mai buni studenti  si mediile lor 
     """
@@ -271,7 +273,10 @@ class Console:
     
   def show_ui(self):
     while True:
-      cmd = self.read(str,"Command(student, discipline, note, raport):")
+      cmd = self.read(str,"Command(student, discipline, note, raport, exit):")
+      if cmd =='exit':
+        print("La revedere!")
+        break
       if cmd == 'student':
         cmdst = self.read(str,"Command(add, update, delete, viewall, view, random): ")
         # add student
@@ -319,3 +324,4 @@ class Console:
         if command == 1: self.__lista_studenti_la_o_disciplina()
         if command == 2: self.__top20_studenti()
         if command == 3: self.__top20_discipline()
+
